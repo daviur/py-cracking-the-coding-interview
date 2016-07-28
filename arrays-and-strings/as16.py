@@ -19,3 +19,49 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
+
+
+def rotate_right(matrix):
+    if not matrix:
+        return
+
+    end = len(matrix) - 1
+    start = 0
+
+    while start < end:
+        for i in range(end - start):
+            left = matrix[end - i][start]
+            # bottom to left
+            matrix[end - i][start] = matrix[end][end - i]
+            # right to bottom
+            matrix[end][end - i] = matrix[start + i][end]
+            # top to right
+            matrix[start + i][end] = matrix[start][start + i]
+            # left to top
+            matrix[start][start + i] = left
+        end -= 1
+        start += 1
+    return matrix
+
+
+@pytest.mark.parametrize('input, expected', [
+    (None, None),
+    ([[1, 2],
+      [3, 4]], [[3, 1],
+                [4, 2]]),
+    ([[1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9]], [[7, 4, 1],
+                   [8, 5, 2],
+                   [9, 6, 3]]),
+    ([[1, 2, 3, 4],
+      [5, 6, 7, 8],
+      [9, 10, 11, 12],
+      [13, 14, 15, 16]], [[13, 9, 5, 1],
+                          [14, 10, 6, 2],
+                          [15, 11, 7, 3],
+                          [16, 12, 8, 4]])
+])
+def test_rotate_right(input, expected):
+    assert rotate_right(input) == expected

@@ -19,3 +19,21 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import pytest
+
+
+def is_rotation(string1, string2):
+    if len(string1) == len(string2) and len(string1) > 0:
+        s = string1 + string1
+        return True if s.find(string2) != -1 else False
+    return False
+
+
+@pytest.mark.parametrize('input, expected', [
+    (('abcdefg', 'abcdefg'), True),
+    (('abcdefg', 'defgabc'), True),
+    (('abcdefg', 'efgacdd'), False),
+    (('abcde', 'abcdefg'), False)
+])
+def test_is_rotation(input, expected):
+    assert is_rotation(*input) is expected
